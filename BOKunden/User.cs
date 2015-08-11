@@ -81,7 +81,7 @@ namespace BO_PM
             else return false;
         }
 
-        public Project addProject(string Name, DateTime Enddate, string Desc){
+        public Project addProject(string Name, DateTime Startdate, DateTime Enddate, string Desc){
             if (mUsername == "") return null;
             else{ 
                 Project p = new Project();
@@ -89,7 +89,7 @@ namespace BO_PM
                 p.Name = Name;
                 p.Description = Desc;
                 p.EndDate = Enddate;
-                p.CreatedDate = DateTime.Today;                
+                p.CreatedDate = Startdate;                
                 if(p.Save()) return p;
                 else return null;
             }

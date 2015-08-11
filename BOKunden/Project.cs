@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 
 namespace BO_PM
 {
@@ -22,9 +23,9 @@ namespace BO_PM
         private DateTime mEndDate;
 
 //PROPERTIES:
-        internal string ID { 
+        public string ID { 
             get {return mID; }
-            set { mID = value;}
+            internal set { mID = value;}
         }
         internal string OwnerName { 
             get {return mOwnerName; }
@@ -60,8 +61,8 @@ namespace BO_PM
                 cmd.Parameters.Add(new SqlParameter("on", OwnerName));
                 cmd.Parameters.Add(new SqlParameter("name", Name));
                 cmd.Parameters.Add(new SqlParameter("desc", Description));
-                cmd.Parameters.Add(new SqlParameter("cd", CreatedDate.Date.ToString("yyyy-MM-dd HH:mm:ss")));
-                cmd.Parameters.Add(new SqlParameter("ed", EndDate.Date.ToString("yyyy-MM-dd HH:mm:ss")));
+                cmd.Parameters.Add(new SqlParameter("cd", CreatedDate));
+                cmd.Parameters.Add(new SqlParameter("ed", EndDate));
                 return (cmd.ExecuteNonQuery() > 0);
             }else{      
                 //bestehender Record -> UPDATE
@@ -74,8 +75,8 @@ namespace BO_PM
                 cmd.Parameters.Add(new SqlParameter("on", OwnerName));
                 cmd.Parameters.Add(new SqlParameter("name", Name));
                 cmd.Parameters.Add(new SqlParameter("desc", Description));
-                cmd.Parameters.Add(new SqlParameter("cd", CreatedDate.Date.ToString("yyyy-MM-dd HH:mm:ss")));
-                cmd.Parameters.Add(new SqlParameter("ed", EndDate.Date.ToString("yyyy-MM-dd HH:mm:ss")));
+                cmd.Parameters.Add(new SqlParameter("cd", CreatedDate));
+                cmd.Parameters.Add(new SqlParameter("ed", EndDate));
                 return (cmd.ExecuteNonQuery() > 0); 
             }
         }
@@ -140,15 +141,16 @@ namespace BO_PM
         internal static Project load(string ID)
         {
             if (ID != ""){
-                SqlCommand cmd = new SqlCommand("select p.ProjectID, p.OwnerName, p.Name, p.CreatedDate, p.EndDate from Project where ID = @id", Main.GetConnection());
+                SqlCommand cmd = new SqlCommand("select p.ProjectID, p.OwnerName, p.Name, p.Description, p.CreatedDate, p.EndDate from Project where ID = @id", Main.GetConnection());
                 cmd.Parameters.Add(new SqlParameter("id", ID));
                 SqlDataReader reader = cmd.ExecuteReader();
                 Project p = new Project();
                 p.ID = reader.GetString(0);
                 p.OwnerName = reader.GetString(1);
                 p.Name = reader.GetString(2);
-                p.CreatedDate = DateTime.Parse(reader.GetString(3));
-                p.EndDate = DateTime.Parse(reader.GetString(4));
+                p.Description = reader.GetString(3);
+                p.CreatedDate = Convert.ToDateTime(reader["CreatedDate"]);
+                p.EndDate = Convert.ToDateTime(reader["EndDate"]);
                 return p;
             }
             else return null;            
@@ -158,7 +160,7 @@ namespace BO_PM
         {
             if (username != "")
             {
-                SqlCommand cmd = new SqlCommand("select p.ProjectID, p.OwnerName, p.Name, p.CreatedDate, p.EndDate from UserProject as up inner join Project as p on p.ProjectID = up.ProjectID where up.Username = @un", Main.GetConnection());
+                SqlCommand cmd = new SqlCommand("select p.ProjectID, p.OwnerName, p.Name, p.Description, p.CreatedDate, p.EndDate from UserProject as up inner join Project as p on p.ProjectID = up.ProjectID where up.Username = @un", Main.GetConnection());
                 cmd.Parameters.Add(new SqlParameter("un", username));
                 SqlDataReader reader = cmd.ExecuteReader();
                 Projects userProjects = new Projects();
@@ -168,8 +170,9 @@ namespace BO_PM
                     p.ID = reader.GetString(0);
                     p.OwnerName = reader.GetString(1);
                     p.Name = reader.GetString(2);
-                    p.CreatedDate = DateTime.Parse(reader.GetString(3));
-                    p.EndDate = DateTime.Parse(reader.GetString(4));
+                    p.Description = reader.GetString(3);
+                    p.CreatedDate = Convert.ToDateTime(reader["CreatedDate"]);
+                    p.EndDate = Convert.ToDateTime(reader["EndDate"]);
                     userProjects.Add(p);
                 }
                 return userProjects;

@@ -32,3 +32,8 @@ L:\BMT\bmt13\mt131094\SS15\SWE\PM\BOKunden\bin\Debug\BOKunden.pdb
 L:\BMT\bmt13\mt131094\SS15\SWE\PM\BOKunden\obj\Debug\BOKunden.csprojResolveAssemblyReference.cache
 L:\BMT\bmt13\mt131094\SS15\SWE\PM\BOKunden\obj\Debug\BOKunden.dll
 L:\BMT\bmt13\mt131094\SS15\SWE\PM\BOKunden\obj\Debug\BOKunden.pdb
+C:\Users\Michael\Desktop\PM\BOKunden\bin\Debug\BOKunden.dll
+C:\Users\Michael\Desktop\PM\BOKunden\bin\Debug\BOKunden.pdb
+C:\Users\Michael\Desktop\PM\BOKunden\obj\Debug\BOKunden.csprojResolveAssemblyReference.cache
+C:\Users\Michael\Desktop\PM\BOKunden\obj\Debug\BOKunden.dll
+C:\Users\Michael\Desktop\PM\BOKunden\obj\Debug\BOKunden.pdb

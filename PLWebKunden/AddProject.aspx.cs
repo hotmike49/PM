@@ -13,6 +13,14 @@ namespace PLWebKunden
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["User"] == null) Response.Redirect("Login.aspx");
+            if (Session["editProject"] != null)
+            {
+                Project ep = (Project) Session["editProject"];
+                txtProjectname.Text = ep.Name;
+                txtProjectDescription.Text = ep.Description;
+                calProjectStartDate.SelectedDate = ep.CreatedDate;
+                calProjectEndDate.SelectedDate = ep.EndDate;
+            }
         }
 
         protected void btnAddProjectAddUser_Click(object sender, EventArgs e)
@@ -22,20 +30,28 @@ namespace PLWebKunden
 
         protected void btnAddProjectSave_Click(object sender, EventArgs e)
         {
-            User u = (User)Session["User"];
-            string name = txtProjectname.Text;
-            string desc = txtProjectDescription.Text;
-            DateTime enddate = calProjectEndDate.SelectedDate;            
-            if (name != "" && enddate != null && desc != "")
+            if (Session["editProject"] == null)
             {
-                Project p = u.addProject(name, enddate, desc);
-              foreach(ListItem i in chkAddProjectProjectUser.Items)
+
+                User u = (User)Session["User"];
+                string name = txtProjectname.Text;
+                string desc = txtProjectDescription.Text;
+                DateTime startdate = calProjectStartDate.SelectedDate;
+                DateTime enddate = calProjectEndDate.SelectedDate;
+                if (name != "" && enddate != null && desc != "")
                 {
-                    string username = i.Value;                    
-                    if(i.Selected){
-                        p.addProjectUser(username);
-                    }else{
-                        p.deleteProjectUser(username);
+                    Project p = u.addProject(name, startdate, enddate, desc);
+                    foreach (ListItem i in chkAddProjectProjectUser.Items)
+                    {
+                        string username = i.Value;
+                        if (i.Selected)
+                        {
+                            p.addProjectUser(username);
+                        }
+                        else
+                        {
+                            p.deleteProjectUser(username);
+                        }
                     }
                 }
             }

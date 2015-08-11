@@ -78,6 +78,11 @@ namespace BO_PM {
             else return false;
         }
 
+        public static Projects getUserProjects(string username)
+        {
+            return Project.LoadUserProjects(username);
+        }
+
     }
 
 }
