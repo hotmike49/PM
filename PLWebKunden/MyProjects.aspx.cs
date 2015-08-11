@@ -56,5 +56,11 @@ namespace PLWebKunden
             Project p = userProjects[MyProjectsView.EditIndex + 1];
             if (p.Delete()) Response.Redirect("MyProjects.aspx");
         }
+
+        protected void MyProjectsView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Session["editProject"] = userProjects[MyProjectsView.SelectedIndex];
+            Response.Redirect("WorkPackages.aspx");
+        }
     }
 }
