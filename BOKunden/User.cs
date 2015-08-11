@@ -123,7 +123,7 @@ Der PL-Programmierer sieht diese Implementation aber nicht. Er sieht die Methode
         {
             if (t.ID != "")
             {
-                SqlCommand cmd = new SqlCommand("select u.Firstname, u.Lastname, u.Username. u.Email from UserTask as ut inner join User as t on ut.Username = u.Username where TaskID = @tid", Main.GetConnection());
+                SqlCommand cmd = new SqlCommand("select u.Firstname, u.Lastname, u.Username, u.Email from UserTask as ut inner join User as t on ut.Username = u.Username where TaskID = @tid", Main.GetConnection());
                 cmd.Parameters.Add(new SqlParameter("tid", t.ID));
                 SqlDataReader reader = cmd.ExecuteReader();
                 Users taskUsers = new Users();
@@ -139,6 +139,46 @@ Der PL-Programmierer sieht diese Implementation aber nicht. Er sieht die Methode
                 return taskUsers;
             }
             else return null;
+        }
+
+        internal static Users LoadProjectUsers(Project p)
+        {
+            if (p.ID != "")
+            {
+                SqlCommand cmd = new SqlCommand("select u.Firstname, u.Lastname, u.Username, u.Email from UserProject as up inner join [User] as u on up.Username = u.Username where ProjectID = @pid", Main.GetConnection());
+                cmd.Parameters.Add(new SqlParameter("pid", p.ID));
+                SqlDataReader reader = cmd.ExecuteReader();
+                Users projectUsers = new Users();
+                while (reader.Read())
+                {
+                    User u = new User();
+                    u.Firstname = reader.GetString(0);
+                    u.Lastname = reader.GetString(1);
+                    u.Username = reader.GetString(2);
+                    u.Email = reader.GetString(3);
+                    projectUsers.Add(u);
+                }
+                return projectUsers;
+            }
+            else return null;
+        }
+
+        internal static Users LoadAllUsers()
+        {
+            SqlCommand cmd = new SqlCommand("select Firstname, Lastname, Username, Email from [User]", Main.GetConnection());
+            SqlDataReader reader = cmd.ExecuteReader();
+            Users allUsers = new Users();
+            while (reader.Read())
+            {
+                User u = new User();
+                u.Firstname = reader.GetString(0);
+                u.Lastname = reader.GetString(1);
+                u.Username = reader.GetString(2);
+                u.Email = reader.GetString(3);
+                allUsers.Add(u);
+            }
+            return allUsers;
+        
         }
     } // Ende Klasse
 } // Ende Namespace

@@ -27,9 +27,9 @@ namespace BO_PM
             get {return mID; }
             internal set { mID = value;}
         }
-        internal string OwnerName { 
+        public string OwnerName { 
             get {return mOwnerName; }
-            set { mOwnerName = value;}
+            internal set { mOwnerName = value;}
         }
         public string Name {
             get { return mName; }
@@ -112,7 +112,7 @@ namespace BO_PM
         public bool addProjectUser(string username){            
              if(username!=""){
                 //string SQL = "insert into UserProject (ProjectID, Username) values (@id, @uid)";
-                string SQL = "IF NOT EXISTS (SELECT Username,ProjectID FROM UserProject  WHERE Username = @un AND ProjectID = @pid) insert into UserProject (ProjectID, Username) values (@pid, @un)";
+                string SQL = "IF NOT EXISTS (SELECT Username, ProjectID FROM UserProject  WHERE Username = @un AND ProjectID = @pid) insert into UserProject (ProjectID, Username) values (@pid, @un)";
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandText = SQL;
                 cmd.Connection = Main.GetConnection();
@@ -125,14 +125,11 @@ namespace BO_PM
 
         public bool deleteProjectUser(string username){            
              if(username!=""){                
-                SqlCommand cmd = new SqlCommand("delete UserProject where ProjectID = @id and Username = @username", Main.GetConnection());
+                SqlCommand cmd = new SqlCommand("delete UserProject where ProjectID = @id and Username = @un", Main.GetConnection());
                 //Die Parameter in SQL-String mit Werten versehen...
                 cmd.Parameters.Add(new SqlParameter("id", mID));
-                cmd.Parameters.Add(new SqlParameter("uid", username));
-               if (cmd.ExecuteNonQuery() > 0)   {
-                    mID = ""; 
-                    return true;
-                }else return false; //Löschen aus DB klappt nicht...
+                cmd.Parameters.Add(new SqlParameter("un", username));
+                return (cmd.ExecuteNonQuery() > 0);
             }else return true; 
        }
        

@@ -14,6 +14,8 @@ namespace PLWebKunden
         private Projects userProjects;
         protected void Page_Load(object sender, EventArgs e)
         {
+            Session["editProject"] = null;
+
 		    if (Session["User"] == null) Response.Redirect("Login.aspx");
             else
             {

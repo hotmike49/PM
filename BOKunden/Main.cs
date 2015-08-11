@@ -83,6 +83,16 @@ namespace BO_PM {
             return Project.LoadUserProjects(username);
         }
 
+        public static Users getAllUsers()
+        {
+            return User.LoadAllUsers();
+        }
+
+        public static Users getProjectUsers(Project p)
+        {
+            return User.LoadProjectUsers(p);
+        }
+
     }
 
 }

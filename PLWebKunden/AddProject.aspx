@@ -44,9 +44,8 @@
         </p>
             <p>User List:</p>
         <p>
-            <asp:CheckBoxList ID="chkAddProjectProjectUser" runat="server" DataSourceID="AddProjectUser" DataTextField="Username" DataValueField="Username">
+            <asp:CheckBoxList ID="chkAddProjectProjectUser" runat="server">
             </asp:CheckBoxList>
-            <asp:SqlDataSource ID="AddProjectUser" runat="server" ConnectionString="Data Source=(LocalDB)\v11.0;AttachDbFilename=C:\Users\Michael\Desktop\PM\DB\PM_DB.mdf;Integrated Security=True;Connect Timeout=30" ProviderName="System.Data.SqlClient" SelectCommand="SELECT [Username] FROM [User]"></asp:SqlDataSource>
         </p>
         <asp:Button ID="btnAddProjectSave" runat="server" Text="Save" OnClick="btnAddProjectSave_Click" />
         <asp:Button ID="btnAddProjectCancel" runat="server" Text="Cancel" OnClick="btnAddProjectCancel_Click" />

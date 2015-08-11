@@ -10,9 +10,25 @@ namespace PLWebKunden
 {
     public partial class AddProject : System.Web.UI.Page
     {
+
+        private Users allUsers;
+        private Users projectUsers;
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                allUsers = Main.getAllUsers();
+                chkAddProjectProjectUser.DataSource = allUsers;
+                chkAddProjectProjectUser.DataBind();
+                foreach (ListItem i in chkAddProjectProjectUser.Items)
+                {
+                    i.Value = allUsers[chkAddProjectProjectUser.Items.IndexOf(i)].Username;
+                    i.Text = i.Value;
+                }
+            }
+
             if (Session["User"] == null) Response.Redirect("Login.aspx");
+
             if (Session["editProject"] != null)
             {
                 Project ep = (Project) Session["editProject"];
@@ -20,7 +36,23 @@ namespace PLWebKunden
                 txtProjectDescription.Text = ep.Description;
                 calProjectStartDate.SelectedDate = ep.CreatedDate;
                 calProjectEndDate.SelectedDate = ep.EndDate;
+
+                foreach (ListItem i in chkAddProjectProjectUser.Items)
+                {
+                    
+                    projectUsers = Main.getProjectUsers(ep);
+
+                    foreach(User u in projectUsers)
+                    {
+                        if(i.Value == u.Username)
+                        {
+                            i.Selected = true;
+                        }
+                    }
+
+                }
             }
+            
         }
 
         protected void btnAddProjectAddUser_Click(object sender, EventArgs e)
@@ -53,6 +85,27 @@ namespace PLWebKunden
                             p.deleteProjectUser(username);
                         }
                     }
+                }
+                Response.Redirect("MyProjects.aspx");
+            }
+            else
+            {
+                Project p = (Project)Session["editProject"];
+                if(p.Save())
+                {
+                    foreach (ListItem i in chkAddProjectProjectUser.Items)
+                    {
+                        string username = i.Value;
+                        if (i.Selected)
+                        {
+                            p.addProjectUser(username);
+                        }
+                        else
+                        {
+                            p.deleteProjectUser(username);
+                        }
+                    }
+                    Response.Redirect("MyProjects.aspx");
                 }
             }
         }

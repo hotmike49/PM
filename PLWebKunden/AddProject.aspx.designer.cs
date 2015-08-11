@@ -103,15 +103,6 @@ namespace PLWebKunden {
         protected global::System.Web.UI.WebControls.CheckBoxList chkAddProjectProjectUser;
         
         /// <summary>
-        /// AddProjectUser-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource AddProjectUser;
-        
-        /// <summary>
         /// btnAddProjectSave-Steuerelement
         /// </summary>
         /// <remarks>
