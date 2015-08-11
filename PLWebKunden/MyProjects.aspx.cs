@@ -50,5 +50,11 @@ namespace PLWebKunden
             Session["editProject"] = userProjects[MyProjectsView.EditIndex+1];
             Response.Redirect("AddProject.aspx");
         }
+
+        protected void MyProjectsView_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            Project p = userProjects[MyProjectsView.EditIndex + 1];
+            if (p.Delete()) Response.Redirect("MyProjects.aspx");
+        }
     }
 }
