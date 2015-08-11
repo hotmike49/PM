@@ -1,0 +1,14 @@
+C:\projects\Kundenverwaltung2010\PLWebKunden\bin\PLWebKunden.dll
+C:\projects\Kundenverwaltung2010\PLWebKunden\bin\PLWebKunden.pdb
+C:\projects\Kundenverwaltung2010\PLWebKunden\bin\BOKunden.dll
+C:\projects\Kundenverwaltung2010\PLWebKunden\bin\BOKunden.pdb
+C:\projects\Kundenverwaltung2010\PLWebKunden\obj\Release\ResolveAssemblyReference.cache
+C:\projects\Kundenverwaltung2010\PLWebKunden\obj\Release\PLWebKunden.dll
+C:\projects\Kundenverwaltung2010\PLWebKunden\obj\Release\PLWebKunden.pdb
+Z:\data\LVs\2013SS\SWE\Projects\Kundenverwaltung2013\PLWebKunden\obj\Release\PLWebKunden.csprojResolveAssemblyReference.cache
+Z:\data\LVs\2013SS\SWE\Projects\Kundenverwaltung2013\PLWebKunden\obj\Release\PLWebKunden.dll
+Z:\data\LVs\2013SS\SWE\Projects\Kundenverwaltung2013\PLWebKunden\obj\Release\PLWebKunden.pdb
+Z:\data\LVs\2013SS\SWE\Projects\Kundenverwaltung2013\PLWebKunden\bin\PLWebKunden.dll
+Z:\data\LVs\2013SS\SWE\Projects\Kundenverwaltung2013\PLWebKunden\bin\PLWebKunden.pdb
+Z:\data\LVs\2013SS\SWE\Projects\Kundenverwaltung2013\PLWebKunden\bin\BOKunden.dll
+Z:\data\LVs\2013SS\SWE\Projects\Kundenverwaltung2013\PLWebKunden\bin\BOKunden.pdb

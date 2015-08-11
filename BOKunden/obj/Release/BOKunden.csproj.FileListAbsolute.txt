@@ -1,0 +1,10 @@
+C:\projects\Kundenverwaltung2010\BOKunden\bin\Release\BOKunden.dll
+C:\projects\Kundenverwaltung2010\BOKunden\bin\Release\BOKunden.pdb
+C:\projects\Kundenverwaltung2010\BOKunden\obj\Release\ResolveAssemblyReference.cache
+C:\projects\Kundenverwaltung2010\BOKunden\obj\Release\BOKunden.dll
+C:\projects\Kundenverwaltung2010\BOKunden\obj\Release\BOKunden.pdb
+Z:\data\LVs\2013SS\SWE\Projects\Kundenverwaltung2013\BOKunden\bin\Release\BOKunden.dll
+Z:\data\LVs\2013SS\SWE\Projects\Kundenverwaltung2013\BOKunden\bin\Release\BOKunden.pdb
+Z:\data\LVs\2013SS\SWE\Projects\Kundenverwaltung2013\BOKunden\obj\Release\BOKunden.dll
+Z:\data\LVs\2013SS\SWE\Projects\Kundenverwaltung2013\BOKunden\obj\Release\BOKunden.pdb
+Z:\data\LVs\2013SS\SWE\Projects\Kundenverwaltung2013\BOKunden\obj\Release\BOKunden.csprojResolveAssemblyReference.cache

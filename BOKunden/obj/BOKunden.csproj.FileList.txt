@@ -1,0 +1,5 @@
+bin\Debug\BOKunden.dll
+bin\Debug\BOKunden.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\BOKunden.dll
+obj\Debug\BOKunden.pdb
