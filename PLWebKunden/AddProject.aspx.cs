@@ -25,33 +25,35 @@ namespace PLWebKunden
                     i.Value = allUsers[chkAddProjectProjectUser.Items.IndexOf(i)].Username;
                     i.Text = i.Value;
                 }
+
+                if (Session["editProject"] != null)
+                {
+                    Project ep = (Project)Session["editProject"];
+                    txtProjectname.Text = ep.Name;
+                    txtProjectDescription.Text = ep.Description;
+                    calProjectStartDate.SelectedDate = ep.CreatedDate;
+                    calProjectEndDate.SelectedDate = ep.EndDate;
+
+                    foreach (ListItem i in chkAddProjectProjectUser.Items)
+                    {
+
+                        projectUsers = Main.getProjectUsers(ep);
+
+                        foreach (User u in projectUsers)
+                        {
+                            if (i.Value == u.Username)
+                            {
+                                i.Selected = true;
+                            }
+                        }
+
+                    }
+                }
             }
 
             if (Session["User"] == null) Response.Redirect("Login.aspx");
 
-            if (Session["editProject"] != null)
-            {
-                Project ep = (Project) Session["editProject"];
-                txtProjectname.Text = ep.Name;
-                txtProjectDescription.Text = ep.Description;
-                calProjectStartDate.SelectedDate = ep.CreatedDate;
-                calProjectEndDate.SelectedDate = ep.EndDate;
-
-                foreach (ListItem i in chkAddProjectProjectUser.Items)
-                {
-                    
-                    projectUsers = Main.getProjectUsers(ep);
-
-                    foreach(User u in projectUsers)
-                    {
-                        if(i.Value == u.Username)
-                        {
-                            i.Selected = true;
-                        }
-                    }
-
-                }
-            }
+            
             
         }
 
@@ -62,14 +64,14 @@ namespace PLWebKunden
 
         protected void btnAddProjectSave_Click(object sender, EventArgs e)
         {
+            string name = txtProjectname.Text;
+            string desc = txtProjectDescription.Text;
+            DateTime startdate = calProjectStartDate.SelectedDate;
+            DateTime enddate = calProjectEndDate.SelectedDate;
+
             if (Session["editProject"] == null)
             {
-
                 User u = (User)Session["User"];
-                string name = txtProjectname.Text;
-                string desc = txtProjectDescription.Text;
-                DateTime startdate = calProjectStartDate.SelectedDate;
-                DateTime enddate = calProjectEndDate.SelectedDate;
                 if (name != "" && enddate != null && desc != "")
                 {
                     Project p = u.addProject(name, startdate, enddate, desc);
@@ -91,7 +93,9 @@ namespace PLWebKunden
             else
             {
                 Project p = (Project)Session["editProject"];
-                if(p.Save())
+                p.Update(name, startdate, enddate, desc);
+
+                if (p.Save())
                 {
                     foreach (ListItem i in chkAddProjectProjectUser.Items)
                     {

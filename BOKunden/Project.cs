@@ -94,6 +94,14 @@ namespace BO_PM
             else return true;
         }
 
+        public void Update(string Name, DateTime Startdate, DateTime Enddate, string Desc)
+        {
+            mName = Name;
+            mCreatedDate = Startdate;
+            mEndDate = Enddate;
+            mDescription = Desc;
+        }
+
         public bool addWorkPackage(string Name, DateTime Enddate) {
             if (mID == "") return false;
             else{
