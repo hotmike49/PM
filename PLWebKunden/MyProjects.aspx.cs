@@ -20,9 +20,11 @@ namespace PLWebKunden
 		    if (Session["User"] == null) Response.Redirect("Login.aspx");
             else
             {
+
                 userProjects = Main.getUserProjects(((User)Session["User"]).Username);
                 MyProjectsView.DataSource = userProjects;
                 MyProjectsView.DataBind();
+
             }
         }
 
