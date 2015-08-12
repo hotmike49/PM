@@ -32,7 +32,8 @@
         </p>
         <p>
             Description:&nbsp;&nbsp;&nbsp;
-            <textarea id="txtaWorkPackageDescription" cols="20" name="S1"></textarea></p>
+            <asp:TextBox ID="txtWorkPackageDesc" runat="server"></asp:TextBox>
+        </p>
         <p>
             Start Date:&nbsp;&nbsp;&nbsp;
             <asp:Calendar ID="calWorkPackageStartDate" runat="server"></asp:Calendar>
@@ -41,8 +42,8 @@
             End Date:&nbsp;&nbsp;&nbsp;
             <asp:Calendar ID="calWorkPackageEndDate" runat="server"></asp:Calendar>
         </p>
-        <asp:Button ID="btnAddWorkPackageSave" runat="server" Text="Save" />
-        <asp:Button ID="btnAddWorkPackageCancel" runat="server" Text="Cancel" />
+        <asp:Button ID="btnAddWorkPackageSave" runat="server" OnClick="btnAddWorkPackageSave_Click1" Text="Save" />
+        <asp:Button ID="btnAddWorkPackageCancel" runat="server" Text="Cancel" OnClick="btnAddWorkPackageCancel_Click" />
     </form>
 </body>
 </html>

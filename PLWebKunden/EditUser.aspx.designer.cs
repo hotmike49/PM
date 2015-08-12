@@ -10,7 +10,7 @@
 namespace PLWebKunden {
     
     
-    public partial class Register {
+    public partial class EditUser {
         
         /// <summary>
         /// form1-Steuerelement
@@ -38,15 +38,6 @@ namespace PLWebKunden {
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtEditUserLastname;
-        
-        /// <summary>
-        /// txtEditUserUsername-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEditUserUsername;
         
         /// <summary>
         /// txtEditUserEmail-Steuerelement

@@ -15,6 +15,7 @@ namespace PLWebKunden
         protected void Page_Load(object sender, EventArgs e)
         {
             Session["editProject"] = null;
+            Session["selectedProject"] = null;
 
 		    if (Session["User"] == null) Response.Redirect("Login.aspx");
             else
@@ -59,7 +60,7 @@ namespace PLWebKunden
 
         protected void MyProjectsView_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Session["editProject"] = userProjects[MyProjectsView.SelectedIndex];
+            Session["selectedProject"] = userProjects[MyProjectsView.SelectedIndex];
             Response.Redirect("WorkPackages.aspx");
         }
     }

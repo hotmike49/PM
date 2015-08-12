@@ -18,18 +18,18 @@ namespace BO_PM
         private string mWorkPackageID; 
         private string mName;
         private string mDescription;
-        private DateTime mCreatedDate = DateTime.Today;
+        private DateTime mCreatedDate;
         private DateTime mEndDate;
         private string mStatus = "0";
 
 //PROPERTIES:
-        internal string ID { 
+        public string ID { 
             get {return mID; }
-            set { mID = value;}
+            internal set { mID = value;}
         }
-        internal string WorkPackageID {
+        public string WorkPackageID {
             get { return mWorkPackageID; }
-            set { mWorkPackageID = value; }
+            internal set { mWorkPackageID = value; }
         }
         public string Name {
             get { return mName; }
@@ -43,7 +43,7 @@ namespace BO_PM
         public DateTime CreatedDate
         { //  kann man auch aus dem PL sehen - aber nicht ändern!
             get { return mCreatedDate; }
-            internal set { mCreatedDate = value; }
+            set { mCreatedDate = value; }
         }
         public DateTime EndDate { 
             get { return mEndDate; }
@@ -58,6 +58,10 @@ namespace BO_PM
                 else
                     return "Done";
             }
+            set
+            {
+                mStatus = value;
+            }
         }
 
         public Users TaskUsers{
@@ -71,22 +75,23 @@ namespace BO_PM
         //METHODS
         public bool Save() {
             if (mID == ""){
-                string SQL = "insert into Task (TaskID, WorkpackageID, Name,Description, CreatedDate, EndDate, Status) values (@id, @wid, @name, @desc, @cd, @ed, @status)";
+                string SQL = "insert into Task (TaskID, WorkPackageID, Name, Description, CreatedDate, EndDate, Status) values (@id, @wid, @name, @desc, @cd, @ed, @status)";
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandText = SQL;
-                cmd.Connection = Main.GetConnection();               
+                cmd.Connection = Main.GetConnection();   
+                mID = Guid.NewGuid().ToString();
                 //Die Parameter in SQL-String mit Werten versehen...
-                cmd.Parameters.Add(new SqlParameter("id",  Guid.NewGuid().ToString()));
-                cmd.Parameters.Add(new SqlParameter("wid", mID));
+                cmd.Parameters.Add(new SqlParameter("id",  mID));
+                cmd.Parameters.Add(new SqlParameter("wid", WorkPackageID));
                 cmd.Parameters.Add(new SqlParameter("name", Name));
                 cmd.Parameters.Add(new SqlParameter("desc", Description));
                 cmd.Parameters.Add(new SqlParameter("cd", CreatedDate));
                 cmd.Parameters.Add(new SqlParameter("ed", EndDate));
-                cmd.Parameters.Add(new SqlParameter("status", Status));
+                cmd.Parameters.Add(new SqlParameter("status", mStatus));
                 return (cmd.ExecuteNonQuery() > 0); 
             }else{
                 //bestehender Record -> UPDATE
-                string SQL = "update Task set WorkPackageID=@wid, Name=@name,Description=@desc CreatedDate=@cd, EndDate=@ed where TaskID = @id";
+                string SQL = "update Task set WorkPackageID=@wid, Name=@name, Description=@desc, CreatedDate=@cd, EndDate=@ed, Status=@status where TaskID = @id";
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandText = SQL;
                 cmd.Connection = Main.GetConnection();
@@ -96,6 +101,7 @@ namespace BO_PM
                 cmd.Parameters.Add(new SqlParameter("name", Name));
                 cmd.Parameters.Add(new SqlParameter("cd", CreatedDate));
                 cmd.Parameters.Add(new SqlParameter("desc", Description));
+                cmd.Parameters.Add(new SqlParameter("status", mStatus));
                 cmd.Parameters.Add(new SqlParameter("ed", EndDate));
                 return (cmd.ExecuteNonQuery() > 0); //hat der INSERT geklappt, sollte genau ein Record verändert worden sein
             }
@@ -116,15 +122,28 @@ namespace BO_PM
 
         public bool addTaskUser(string username){
             if (username != ""){
-                string SQL = "insert into UserTask (TaskID, username) values (@id, @username)";
+                string SQL = "IF NOT EXISTS (SELECT Username, TaskID FROM UserTask  WHERE Username = @username AND TaskID = @tid) insert into UserTask (TaskID, Username) values (@tid, @username)";
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandText = SQL;
                 cmd.Connection = Main.GetConnection();
                 //Die Parameter in SQL-String mit Werten versehen...
-                cmd.Parameters.Add(new SqlParameter("id", mID));
+                cmd.Parameters.Add(new SqlParameter("tid", mID));
                 cmd.Parameters.Add(new SqlParameter("username", username));
                 return cmd.ExecuteNonQuery() > 0;
             } else return false;
+        }
+
+        public bool deleteTaskUser(string username)
+        {
+            if (username != "")
+            {
+                SqlCommand cmd = new SqlCommand("delete UserTask where TaskID = @id and Username = @un", Main.GetConnection());
+                //Die Parameter in SQL-String mit Werten versehen...
+                cmd.Parameters.Add(new SqlParameter("id", mID));
+                cmd.Parameters.Add(new SqlParameter("un", username));
+                return (cmd.ExecuteNonQuery() > 0);
+            }
+            else return true;
         }
 
         internal static Task load(string ID){
@@ -137,8 +156,8 @@ namespace BO_PM
                 t.ID = reader.GetString(0);
                 t.WorkPackageID = reader.GetString(1);
                 t.Name = reader.GetString(2);
-                t.CreatedDate = DateTime.Parse(reader.GetString(3));
-                t.EndDate = DateTime.Parse(reader.GetString(4));
+                t.CreatedDate = Convert.ToDateTime(reader["CreatedDate"]);
+                t.EndDate = Convert.ToDateTime(reader["EndDate"]);
                 return t;
             }
             else return null;            
@@ -147,7 +166,7 @@ namespace BO_PM
         
        // Laden aller Tasks die einem User zugeordnet sind
         internal static Tasks LoadUserTasks(User u)        {
-            SqlCommand cmd = new SqlCommand("select t.TaskID, t.WorkPackageID, t.Name, t.CreatedDate, t.EndDate from UserTask as ut inner join Task as t on ut.TaskID = t.TaskID where Username = @username and t.status = '0'", Main.GetConnection());
+            SqlCommand cmd = new SqlCommand("select t.TaskID, t.WorkPackageID, t.Name, t.CreatedDate, t.EndDate, t.Description  from UserTask as ut inner join Task as t on ut.TaskID = t.TaskID where Username = @username and t.status = '0'", Main.GetConnection());
             cmd.Parameters.Add(new SqlParameter("username", u.Username));
             SqlDataReader reader = cmd.ExecuteReader();
             Tasks userTasks = new Tasks();
@@ -156,8 +175,9 @@ namespace BO_PM
                 t.ID = reader.GetString(0);
                 t.WorkPackageID = reader.GetString(1);
                 t.Name = reader.GetString(2);
-                t.CreatedDate = DateTime.Parse(reader.GetString(3));
-                t.EndDate = DateTime.Parse(reader.GetString(4));
+                t.CreatedDate = Convert.ToDateTime(reader["CreatedDate"]);
+                t.EndDate = Convert.ToDateTime(reader["EndDate"]);
+                t.Description = reader.GetString(5);
                 
                 userTasks.Add(t);
             }
@@ -165,22 +185,22 @@ namespace BO_PM
         }
 
         // Laden aller User die einem Task zugeordnet sind
-        internal static Tasks getTaskUsers(User u){
-            SqlCommand cmd = new SqlCommand("select t.TaskID, t.WorkPackageID, t.Name, t.CreatedDate, t.EndDate from UserTask as ut inner join Task as t on ut.TaskID = t.TaskID where Username = @username", Main.GetConnection());
-            cmd.Parameters.Add(new SqlParameter("username", u.Username));
+        public Users loadTaskUsers(){
+            SqlCommand cmd = new SqlCommand("select u.Username, u.Firstname, u.Lastname, u.Email from UserTask as ut inner join [User] as u on ut.Username = u.Username where TaskID = @tid", Main.GetConnection());
+            cmd.Parameters.Add(new SqlParameter("tid", mID));
             SqlDataReader reader = cmd.ExecuteReader();
-            Tasks userTasks = new Tasks();
+            Users taskUsers = new Users();
             while (reader.Read())
             {
-                Task t = new Task();
-                t.ID = reader.GetString(0);
-                t.WorkPackageID = reader.GetString(1);
-                t.Name = reader.GetString(2);
-                t.CreatedDate = DateTime.Parse(reader.GetString(3));
-                t.EndDate = DateTime.Parse(reader.GetString(4));
-                userTasks.Add(t);
+                User u = new User();
+                u.Username = reader.GetString(0);
+                u.Firstname = reader.GetString(1);
+                u.Lastname = reader.GetString(2);
+                u.Email = reader.GetString(3);                
+                taskUsers.Add(u);
             }
-            return userTasks;
+            return taskUsers;
         }
+
     }
 }

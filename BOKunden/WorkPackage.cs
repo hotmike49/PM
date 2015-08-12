@@ -22,13 +22,13 @@ namespace BO_PM
         private DateTime mEndDate;
 
 //PROPERTIES:
-        internal string ID { 
+        public string ID { 
             get {return mID; }
-            set { mID = value;}
+            internal set { mID = value;}
         }
-        internal string ProjectID {
+        public string ProjectID {
             get { return mProjectID; }
-            set { mProjectID = value; }
+            internal set { mProjectID = value; }
         }
         public string Name {
             get { return mName; }
@@ -41,12 +41,12 @@ namespace BO_PM
         public DateTime CreatedDate
         { //  kann man auch aus dem PL sehen - aber nicht ändern!
             get { return mCreatedDate; }
-            internal set { mCreatedDate = value; }
+            set { mCreatedDate = value; }
         }
         public DateTime EndDate
         { //  kann man auch aus dem PL sehen - aber nicht ändern!
             get { return mEndDate; }
-            internal set { mEndDate = value; }
+            set { mEndDate = value; }
         }
 
         internal WorkPackage() { } // internal constructor - verhindert erzeugung mit new aus dem PL
@@ -68,7 +68,7 @@ namespace BO_PM
             }else{
                 //Insert WorkPackage in Project
                 //bestehender Record -> UPDATE
-                string SQL = "update Task set ProjectID=@pid, Name=@name, Description=@desc, CreatedDate=@cd, EndDate=@ed where TaskID = @id";
+                string SQL = "update Workpackage set ProjectID=@pid, Name=@name, Description=@desc, CreatedDate=@cd, EndDate=@ed where TaskID = @id";
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandText = SQL;
                 cmd.Connection = Main.GetConnection();
@@ -96,18 +96,44 @@ namespace BO_PM
             else return true;
         }
 
-        public bool addTask(string Name, DateTime Enddate) {
-            if (mID == "") return false;
+    public Task addTask(string Name, DateTime CreatedDate, DateTime Enddate, string Description){
+            if (mID == "") return null;
             else{
                 Task t = new Task();
-                t.ID = Guid.NewGuid().ToString();
                 t.WorkPackageID = mID;
                 t.Name = Name;
+                t.CreatedDate = CreatedDate;
                 t.EndDate = Enddate;
-                t.CreatedDate = DateTime.Today;
+                t.Description = Description;
                 t.Save();                
-                return true;
+                return t;
             }
+        }
+
+
+        public Tasks loadWorkPackageTasks()
+        {
+            if (mID != "")
+            {
+                SqlCommand cmd = new SqlCommand("select t.Name, t.Description, t.CreatedDate, t.EndDate, t.TaskID, t.WorkpackageID, t.Status from Task as t where WorkpackageID = @id", Main.GetConnection());
+                cmd.Parameters.Add(new SqlParameter("id", mID));
+                SqlDataReader reader = cmd.ExecuteReader();
+                Tasks ts = new Tasks();
+                while (reader.Read())
+                {
+                    Task t = new Task();
+                    t.Name = reader.GetString(0);
+                    t.Description = reader.GetString(1);
+                    t.ID = reader.GetString(4);
+                    t.WorkPackageID = reader.GetString(5);
+                    t.CreatedDate = Convert.ToDateTime(reader["CreatedDate"]);
+                    t.EndDate = Convert.ToDateTime(reader["EndDate"]);
+                    t.Status = reader.GetString(6);
+                    ts.Add(t);
+                }
+                return ts;
+            }
+            else return null;
         }
     }
 }

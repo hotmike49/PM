@@ -32,7 +32,8 @@
         </p>
         <p>
             Description:&nbsp;&nbsp;&nbsp;
-            <textarea id="txtaTaskDescription" cols="20" name="S1"></textarea></p>
+            <asp:TextBox ID="txtTaskDescription" runat="server"></asp:TextBox>
+        </p>
         <p>
             Start Date:&nbsp;&nbsp;&nbsp;
             <asp:Calendar ID="calTaskStartDate" runat="server"></asp:Calendar>
@@ -49,6 +50,8 @@
         <br />
         Status:&nbsp;&nbsp;&nbsp;
         <asp:DropDownList ID="ddlStatus" runat="server">
+            <asp:ListItem Value="0">In Progress</asp:ListItem>
+            <asp:ListItem Value="1">Done</asp:ListItem>
         </asp:DropDownList>
         <br />
         <br />

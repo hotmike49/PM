@@ -41,12 +41,13 @@ namespace BO_PM
         }
         public DateTime CreatedDate{ //  kann man auch aus dem PL sehen - aber nicht ändern!
             get { return mCreatedDate; }
-            internal set { mCreatedDate = value; }
+            set { mCreatedDate = value; }
         }
         public DateTime EndDate { //  kann man auch aus dem PL sehen - aber nicht ändern!
             get { return mEndDate; }
-            internal set { mEndDate = value; }
+            set { mEndDate = value; }
         }
+
         internal Project() { } // internal constructor - verhindert erzeugung mit new aus dem PL
         
         public bool Save() {
@@ -94,28 +95,43 @@ namespace BO_PM
             else return true;
         }
 
-        public void Update(string Name, DateTime Startdate, DateTime Enddate, string Desc)
+        public bool addWorkPackage(string Name, DateTime CreatedDate, DateTime Enddate, string Description)
         {
-            mName = Name;
-            mCreatedDate = Startdate;
-            mEndDate = Enddate;
-            mDescription = Desc;
-        }
-
-        public bool addWorkPackage(string Name, DateTime Enddate) {
-            if (mID == "") return false;
+            if (mID == "") return true;
             else{
                 WorkPackage w = new WorkPackage();
-                w.ID = Guid.NewGuid().ToString();
                 w.ProjectID = mID;
                 w.Name = Name;
+                w.Description = Description;
                 w.EndDate = Enddate;
-                w.CreatedDate = DateTime.Today;
+                w.CreatedDate = CreatedDate;
                 w.Save();
-                return true;
+                return false;
             }
         }
 
+        public WorkPackages loadWorkPackages(){
+            if (mID != "")
+            {
+                SqlCommand cmd = new SqlCommand("select w.Name, w.Description, w.CreatedDate, w.EndDate, w.ProjectID, w.WorkPackageID from Workpackage as w where ProjectID = @id", Main.GetConnection());
+                cmd.Parameters.Add(new SqlParameter("id", mID));
+                SqlDataReader reader = cmd.ExecuteReader();
+                WorkPackages ws = new WorkPackages();
+                while (reader.Read())
+                {
+                    WorkPackage w = new WorkPackage();
+                    w.Name = reader.GetString(0);
+                    w.Description = reader.GetString(1);
+                    w.CreatedDate = Convert.ToDateTime(reader["CreatedDate"]);
+                    w.EndDate = Convert.ToDateTime(reader["EndDate"]);
+                    w.ProjectID = reader.GetString(4);
+                    w.ID = reader.GetString(5);
+                    ws.Add(w);
+                }
+                return ws;
+            }
+            else return null;
+        }
 
         public bool addProjectUser(string username){            
              if(username!=""){

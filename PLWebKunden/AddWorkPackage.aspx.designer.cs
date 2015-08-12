@@ -67,6 +67,15 @@ namespace PLWebKunden {
         protected global::System.Web.UI.WebControls.TextBox txtWorkPackagename;
         
         /// <summary>
+        /// txtWorkPackageDesc-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtWorkPackageDesc;
+        
+        /// <summary>
         /// calWorkPackageStartDate-Steuerelement
         /// </summary>
         /// <remarks>

@@ -15,8 +15,7 @@ namespace BO_PM
         private string mEmail;
         private string mUsername ="";        
 
-// PROPERTIES *********************************************************************************************
-        // die ID wird ansich nie (von aussen) geschrieben, da sie ja als GUID beim Speichern erzeugt wird. 
+// PROPERTIES ********************************************************************************************* 
         
         public string Username { //readonly für den PL
             get { return mUsername; } //auslesen darf man sie aber natürlich schon
@@ -66,7 +65,7 @@ namespace BO_PM
             {
                 //user wird über Main.register hinzugefügt
                 //bestehender Record -> UPDATE
-                string SQL = "update User set Firstname=@fn, Lastname=@ln, Email=@email where username = @username";
+                string SQL = "update [User] set Firstname=@fn, Lastname=@ln, Email=@email where username = @username";
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandText = SQL;
                 cmd.Connection = Main.GetConnection();
@@ -97,7 +96,7 @@ namespace BO_PM
 
         public bool changePassword(string pw){
               if (mUsername != ""){
-                string SQL = "update User set Password=@pw where username = @username";
+                string SQL = "update [User] set Password=@pw where username = @username";
                 SqlCommand cmd = new SqlCommand();
                 cmd.CommandText = SQL;
                 cmd.Connection = Main.GetConnection();

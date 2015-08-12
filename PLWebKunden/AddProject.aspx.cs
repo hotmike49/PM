@@ -15,6 +15,7 @@ namespace PLWebKunden
         private Users projectUsers;
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["User"] == null) Response.Redirect("Login.aspx");
             if (!IsPostBack)
             {
                 allUsers = Main.getAllUsers();
@@ -50,11 +51,6 @@ namespace PLWebKunden
                     }
                 }
             }
-
-            if (Session["User"] == null) Response.Redirect("Login.aspx");
-
-            
-            
         }
 
         protected void btnAddProjectAddUser_Click(object sender, EventArgs e)
@@ -93,7 +89,10 @@ namespace PLWebKunden
             else
             {
                 Project p = (Project)Session["editProject"];
-                p.Update(name, startdate, enddate, desc);
+                p.Name = name;
+                p.CreatedDate = startdate;
+                p.EndDate = enddate;
+                p.Description = desc;
 
                 if (p.Save())
                 {

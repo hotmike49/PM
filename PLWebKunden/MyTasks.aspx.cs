@@ -10,13 +10,16 @@ namespace PLWebKunden
 {
     public partial class MyTasks : System.Web.UI.Page
     {
+        BO_PM.Tasks ts;
         protected void Page_Load(object sender, EventArgs e)
         {
-		 if (Session["User"] == null) Response.Redirect("Login.aspx");
-		 User u = (User)Session["User"];
-         BO_PM.Tasks t = u.MyTasks;            
-         MyTasksView.DataSource = t;
-         MyTasksView.DataBind(); 
+            Session["selectedTask"] = null;
+		    if (Session["User"] == null) Response.Redirect("Login.aspx");
+		    User u = (User)Session["User"];
+            ts = u.MyTasks;           
+            MyTasksView.DataSource = ts;
+            MyTasksView.DataBind();
+            lblMyTasksUsername.Text = u.Username;
         }
 
         protected void btnMyTasksMyProjects_Click(object sender, EventArgs e)
@@ -26,12 +29,18 @@ namespace PLWebKunden
 
         protected void btnMyTasksUser_Click(object sender, EventArgs e)
         {
-            Response.Redirect("MyTasks.aspx");
+            Response.Redirect("EditUser.aspx");
         }
 
         protected void btnMyTasksLogout_Click(object sender, EventArgs e)
         {
             Response.Redirect("Welcome.aspx");
+        }
+
+        protected void MyTasksView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Session["selectedTask"] = ts[MyTasksView.SelectedIndex];
+            Response.Redirect("TaskDetail.aspx");
         }
     }
 }

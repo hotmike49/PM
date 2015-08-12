@@ -13,7 +13,7 @@ namespace PLWebKunden
 
         protected void Page_Load(object sender, EventArgs e)
         {
-		if (Session["User"] != null) Response.Redirect("MyProjects.aspx");
+            if (Session["User"] != null) { Response.Redirect("MyProjects.apsx"); }
         }
 
         protected void btnRegisterRegister_Click(object sender, EventArgs e)
@@ -25,19 +25,20 @@ namespace PLWebKunden
             string pw = txtRegisterPassword.Text;
             string pw2 = txtRegisterConfirmPassword.Text;
 
-            if (pw == pw2)
-            {
-                if (Main.register(fn, ln, un, email, pw))
+                if (pw == pw2)
                 {
-                    Response.Redirect("Login.aspx");
+                    if (Main.register(fn, ln, un, email, pw))
+                    {
+                        Response.Redirect("Login.aspx");
+                    }
                 }
-            }
-            else txtRegisterConfirmPassword.Text = "not identical passwords";
+                else txtRegisterConfirmPassword.Text = "not identical passwords";
+            
         }
 
         protected void btnRegisterCancel_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Welcome.aspx");
+           Response.Redirect("MyProjects.aspx");
         }
     }
 }

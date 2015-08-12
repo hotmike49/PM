@@ -14,15 +14,14 @@
 
 
     
-        <asp:Button ID="btnMyTasksMyProjects" runat="server" Text="MyProjects" OnClick="btnMyTasksMyProjects_Click" />
-    
+        <asp:Button ID="btnMyTasksMyProjects" runat="server" Text="MyProjects" OnClick="btnMyTasksMyProjects_Click" />    
         <asp:Button ID="btnMyTasksUser" runat="server" Text="User" OnClick="btnMyTasksUser_Click" />
         <asp:Button ID="btnMyTasksLogout" runat="server" Text="Logout" OnClick="btnMyTasksLogout_Click" />
     
     <br />
     <br />
     <h4><asp:Label ID="lblMyTasksUsername" runat="server" Text="Label"></asp:Label> &nbsp;- Tasks</h4><br />
-    <asp:GridView ID="MyTasksView" runat="server">
+    <asp:GridView ID="MyTasksView" runat="server" AutoGenerateSelectButton="True" OnSelectedIndexChanged="MyTasksView_SelectedIndexChanged">
     </asp:GridView>
 </form>
 </body>

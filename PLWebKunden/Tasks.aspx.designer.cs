@@ -10,7 +10,7 @@
 namespace PLWebKunden {
     
     
-    public partial class WorkPackages {
+    public partial class Tasks {
         
         /// <summary>
         /// form1-Steuerelement
@@ -58,13 +58,22 @@ namespace PLWebKunden {
         protected global::System.Web.UI.WebControls.Button btnTasksLogout;
         
         /// <summary>
-        /// btnTasksAddProject-Steuerelement
+        /// lblTasksWorkPackagename-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnTasksAddProject;
+        protected global::System.Web.UI.WebControls.Label lblTasksWorkPackagename;
+        
+        /// <summary>
+        /// btnTasksAddTask-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnTasksAddTask;
         
         /// <summary>
         /// TasksView-Steuerelement
